@@ -1,7 +1,4 @@
 #!/usr/bin/python3
-"""
-Main module for testing the canUnlockAll function.
-"""
 
 canUnlockAll = __import__('0-lockboxes').canUnlockAll
 
