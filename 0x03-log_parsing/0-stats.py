@@ -1,30 +1,56 @@
 #!/usr/bin/python3
+"""
+Reads input from stdin line by line and computes metrics.
+"""
+
 import sys
 
-total_size = 0
-status_codes = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405': 0, '500': 0}
-line_count = 0
 
-try:
-    for line in sys.stdin:
-        split_line = line.split()
-        if len(split_line) >= 2:
-            status_code = split_line[-2]
-            file_size = split_line[-1]
-            if status_code in status_codes:
-                status_codes[status_code] += 1
-            total_size += int(file_size)
-            line_count += 1
-        if line_count % 10 == 0:
-            print("File size: {}".format(total_size))
-            for code, count in sorted(status_codes.items()):
-                if count > 0:
-                    print("{}: {}".format(code, count))
-            print("")
-except KeyboardInterrupt:
-    pass
+def print_statistics(total_file_size, status_counts):
+    print(f"File size: {total_file_size}")
+    sorted_status_codes = sorted(status_counts.keys())
+    for status_code in sorted_status_codes:
+        count = status_counts[status_code]
+        print(f"{status_code}: {count}")
 
-print("File size: {}".format(total_size))
-for code, count in sorted(status_codes.items()):
-    if count > 0:
-        print("{}: {}".format(code, count))
+
+def parse_log_entry(log_entry):
+    parts = log_entry.split()
+    if len(parts) >= 7:
+        status_code = parts[-2]
+        file_size = int(parts[-1])
+        return status_code, file_size
+    else:
+        return None, None
+
+
+def compute_metrics(log_entries):
+    total_file_size = 0
+    status_counts = {}
+
+    for log_entry in log_entries:
+        status_code, file_size = parse_log_entry(log_entry)
+        if status_code is not None and file_size is not None:
+            total_file_size += file_size
+            status_counts[status_code] = status_counts.get(status_code, 0) + 1
+
+    return total_file_size, status_counts
+
+
+def read_logs():
+    log_entries = []
+    try:
+        for line in sys.stdin:
+            log_entries.append(line.strip())
+            if len(log_entries) == 10:
+                total_file_size, status_counts = compute_metrics(log_entries)
+                print_statistics(total_file_size, status_counts)
+                log_entries = []
+    except KeyboardInterrupt:
+        total_file_size, status_counts = compute_metrics(log_entries)
+        print_statistics(total_file_size, status_counts)
+
+
+if __name__ == "__main__":
+    read_logs()
+
