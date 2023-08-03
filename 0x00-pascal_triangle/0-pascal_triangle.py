@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 def pascal_triangle(n):
     """
     Generates Pascal's triangle of size n.
@@ -21,4 +23,3 @@ def pascal_triangle(n):
         triangle.append(curr_row)
 
     return triangle
-
