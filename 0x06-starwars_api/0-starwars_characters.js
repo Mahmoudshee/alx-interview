@@ -17,10 +17,10 @@ request(url, function (error, response, body) {
     process.exit(1);
   }
   const film = JSON.parse(body);
-  const characters = film.characters;
+  const charactersUrls = film.characters;
 
-  characters.forEach((characterUrl) => {
-    request(characterUrl, function (error, response, body) {
+  const fetchCharacter = (url) => {
+    request(url, function (error, response, body) {
       if (error) {
         console.error(error);
         process.exit(1);
@@ -28,6 +28,8 @@ request(url, function (error, response, body) {
       const character = JSON.parse(body);
       console.log(character.name);
     });
-  });
+  };
+
+  charactersUrls.forEach(fetchCharacter);
 });
 
