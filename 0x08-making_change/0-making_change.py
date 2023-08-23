@@ -16,7 +16,7 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
-    # Initialize a list to store the minimum number of coins needed for each total value
+    # Initialize minimum number of coins needed for each total value
     dp = [float('inf')] * (total + 1)
     dp[0] = 0
 
@@ -24,10 +24,10 @@ def makeChange(coins, total):
     for coin in coins:
         # Iterate through each possible total value
         for i in range(coin, total + 1):
-            # Calculate the minimum number of coins needed for the current total value
+            # Calculate the minimum number of coins needed
             dp[i] = min(dp[i], dp[i - coin] + 1)
 
-    # If the minimum number of coins for the total amount is still infinity, it's not possible to make change
+    # If the minimum number of coins is still infinity,no changes occurs
     if dp[total] == float('inf'):
         return -1
 
@@ -35,5 +35,7 @@ def makeChange(coins, total):
     return dp[total]
 
 # Test cases
+
+
 print(makeChange([1, 2, 25], 37))  # Expected output: 7
 print(makeChange([1256, 54, 48, 16, 102], 1453))  # Expected output: -1
