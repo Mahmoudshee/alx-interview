@@ -1,10 +1,20 @@
 #!/usr/bin/python3
 
 def makeChange(coins, total):
+    """
+    Determine the fewest number of coins needed to meet a given amount total.
+
+    Args:
+        coins (list[int]): List of coin values.
+        total (int): Target total amount.
+
+    Returns:
+        int: Fewest number of coins needed to meet the total.
+            Returns -1 if total cannot be met.
+    """
     if total <= 0:
         return 0
 
-    # Create a list to store the minimum number of coins for each total value
     dp = [float('inf')] * (total + 1)
     dp[0] = 0
 
@@ -17,7 +27,7 @@ def makeChange(coins, total):
 
     return dp[total]
 
-# Test cases
-print(makeChange([1, 2, 25], 37))
-print(makeChange([1256, 54, 48, 16, 102], 1453))
 
+if __name__ == "__main__":
+    print(makeChange([1, 2, 25], 37))
+    print(makeChange([1256, 54, 48, 16, 102], 1453))
