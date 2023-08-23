@@ -1,4 +1,4 @@
-#!/usr/bin/python3.4
+#!/usr/bin/python3
 
 def makeChange(coins, total):
     if total <= 0:
